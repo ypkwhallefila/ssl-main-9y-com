@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5">
+    <title>九游 · 日常查询与延伸阅读</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            background: #f4f6f9;
+            color: #1e293b;
+            line-height: 1.6;
+        }
+
+        /* 深色头图 – 主视觉卡片 */
+        .hero {
+            background: linear-gradient(145deg, #0f172a 0%, #1e293b 100%);
+            padding: 4rem 2rem 3.5rem;
+            color: #e2e8f0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: -30px;
+            left: 0;
+            width: 100%;
+            height: 60px;
+            background: #f4f6f9;
+            border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+            transform: scaleX(1.2);
+        }
+
+        .hero h1 {
+            font-size: 2.6rem;
+            font-weight: 500;
+            letter-spacing: 1px;
+            margin-bottom: 0.5rem;
+            color: #f8fafc;
+        }
+
+        .hero .sub {
+            font-size: 1.1rem;
+            color: #94a3b8;
+            max-width: 600px;
+            margin: 0 auto 0.8rem;
+            font-weight: 300;
+        }
+
+        .hero .tagline {
+            display: inline-block;
+            margin-top: 0.6rem;
+            padding: 0.2rem 1.2rem;
+            border: 1px solid #334155;
+            border-radius: 30px;
+            font-size: 0.85rem;
+            color: #94a3b8;
+            background: #1e293b;
+        }
+
+        /* 正文区 — 浅色背景 */
+        .content {
+            max-width: 960px;
+            margin: -1.2rem auto 0;
+            padding: 0 1.5rem 3rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* 卡片网格 — 信息卡片式 */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.5rem;
+            margin: 2.5rem 0 2rem;
+        }
+
+        .card {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 1.8rem 1.4rem 1.6rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04), 0 1px 3px rgba(0, 0, 0, 0.02);
+            transition: transform 0.15s ease, box-shadow 0.2s;
+            border: 1px solid rgba(226, 232, 240, 0.6);
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.06);
+            border-color: #d4dcec;
+        }
+
+        .card h3 {
+            font-size: 1.25rem;
+            font-weight: 500;
+            margin-bottom: 0.75rem;
+            color: #0f172a;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .card h3 .emoji-bg {
+            font-size: 1.3rem;
+            opacity: 0.8;
+        }
+
+        .card p {
+            font-size: 0.95rem;
+            color: #334155;
+            margin-bottom: 0.4rem;
+        }
+
+        .card .meta {
+            font-size: 0.8rem;
+            color: #64748b;
+            margin-top: 0.8rem;
+            border-top: 1px dashed #e2e8f0;
+            padding-top: 0.6rem;
+        }
+
+        /* 用途卡片（特别的强调卡片，融合主色） */
+        .card-accent {
+            background: #f1f5fe;
+            border-left: 4px solid #3b82f6;
+        }
+
+        .card-accent h3 {
+            color: #1e3a8a;
+        }
+
+        /* 适合人群卡片微样式 */
+        .card-people {
+            background: #faf9fe;
+            border: 1px solid #e4dcf7;
+        }
+
+        /* 自然链接段落 */
+        .link-paragraph {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 1.8rem 2rem;
+            margin: 2rem 0 1.5rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+            border: 1px solid #e9edf4;
+        }
+
+        .link-paragraph p {
+            font-size: 1rem;
+            margin-bottom: 0.9rem;
+            color: #1e293b;
+        }
+
+        .link-paragraph p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* 强调色链接 — 只有九游链接使用强调色 */
+        a {
+            color: #2563eb;
+            text-decoration: none;
+            font-weight: 450;
+            border-bottom: 1px dotted #94a3b8;
+            transition: border-color 0.15s, color 0.15s;
+        }
+
+        a:hover {
+            color: #1e40af;
+            border-bottom: 1px solid #2563eb;
+        }
+
+        /* 所有其他普通链接（如FAQ摘要中的内部锚点）保持克制 */
+        .quiet-link {
+            color: #475569;
+            border-bottom: 1px dotted #cbd5e1;
+        }
+
+        .quiet-link:hover {
+            color: #1e293b;
+            border-bottom: 1px solid #64748b;
+        }
+
+        /* 提示 / 引用块 */
+        .note-box {
+            background: #f1f5f9;
+            border-radius: 16px;
+            padding: 1.4rem 1.6rem;
+            margin: 1.8rem 0;
+            border-left: 4px solid #64748b;
+            font-size: 0.95rem;
+            color: #1e293b;
+        }
+
+        .note-box strong {
+            color: #0f172a;
+        }
+
+        /* FAQ 摘要 */
+        .faq-mini {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem 2rem;
+            margin: 1.5rem 0;
+            padding: 1.2rem 1.5rem;
+            background: #f8fafc;
+            border-radius: 16px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .faq-mini dt {
+            font-weight: 500;
+            color: #0f172a;
+            font-size: 0.9rem;
+            margin-bottom: 0.15rem;
+            width: 100%;
+        }
+
+        .faq-mini dd {
+            color: #475569;
+            font-size: 0.9rem;
+            margin-left: 0;
+            flex: 1 1 180px;
+        }
+
+        .faq-mini dd a {
+            border-bottom: none;
+        }
+
+        /* 响应式微调 */
+        @media (max-width: 600px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+            .hero {
+                padding: 3rem 1.2rem 2.5rem;
+            }
+            .content {
+                padding: 0 1rem 2.5rem;
+            }
+            .card {
+                padding: 1.4rem 1rem;
+            }
+            .link-paragraph {
+                padding: 1.4rem 1.2rem;
+            }
+            .faq-mini {
+                flex-direction: column;
+                gap: 0.6rem;
+            }
+        }
+
+        footer {
+            text-align: center;
+            padding: 1.8rem 1rem 2.5rem;
+            font-size: 0.8rem;
+            color: #64748b;
+            border-top: 1px solid #e2e8f0;
+            max-width: 960px;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 深色头图 · 主视觉 -->
+    <header class="hero">
+        <h1>九游 · 信息侧写</h1>
+        <p class="sub">日常查询、对照与延伸阅读的安静角落</p>
+        <span class="tagline">卡片式 · 自然叙述</span>
+    </header>
+
+    <main class="content">
+
+        <!-- 简要介绍段落 — 自然、克制、有一点叙述感 -->
+        <p style="margin-top: 0.8rem; font-size: 1rem; color: #334155; max-width: 700px;">
+            有些东西你只是偶尔想起，比如某个游戏的名字、版本号、或者一段模糊的攻略。打开一个页面，不是为了深究，而是为了快速对照、确认、然后继续手头的事。这个页面试着提供这样一种节奏：不用滚动太多，就能看到几组卡片，几段话，以及一些可以继续翻阅的线索。
+        </p>
+
+        <!-- 信息卡片网格：主视觉 & 用途 & 适合人群 -->
+        <div class="card-grid">
+            <!-- 卡片1：主视觉 — 日常查询 -->
+            <div class="card">
+                <h3><span class="emoji-bg">🔍</span> 日常查询</h3>
+                <p>版本更新简述、活动时间表、界面变动——这些零散的信息如果有一个固定的归拢处，会省去不少来回切换的精力。</p>
+                <p class="meta">适合快速扫读 · 不做长篇分析</p>
+            </div>
+
+            <!-- 卡片2：用途 — 对照与延伸 -->
+            <div class="card card-accent">
+                <h3><span class="emoji-bg">📋</span> 对照 & 延伸</h3>
+                <p>当你想确认某个道具的获取条件，或是翻看不同渠道的叙述差异时，一个稳定的参照点比什么都重要。不赶时间，只是核对。</p>
+                <p class="meta">避免信息过载 · 克制呈现</p>
+            </div>
+
+            <!-- 卡片3：适合人群 -->
+            <div class="card card-people">
+                <h3><span class="emoji-bg">👥</span> 适合人群</h3>
+                <p>偶尔回来看看的老玩家、习惯横向对比的查阅者、以及那些只想安静读几段描述而不被催促的人。</p>
+                <p class="meta">不是攻略站 · 更像是侧写</p>
+            </div>
+
+            <!-- 卡片4：提示卡片 — 节奏提示 -->
+            <div class="card">
+                <h3><span class="emoji-bg">⏳</span> 阅读节奏</h3>
+                <p>每张卡片都是一个独立的片段。你可以从任何一张开始，也可以随时停下。没有强制路径，只有可选的入口。</p>
+                <p class="meta">自由翻阅 · 无需顺序</p>
+            </div>
+        </div>
+
+        <!-- 自然链接段落 — 把「九游」嵌入句子，不额外加词 -->
+        <div class="link-paragraph">
+            <p>有些人习惯把<a href="https://ssl-main-9y.com">九游</a>当作一个安静的参照坐标：不看推送，不刷排名，只是在需要的时候打开，查一下，然后关掉。这种做法听起来有点冷淡，但确实自洽——信息是用来服务的，不是用来消耗时间的。</p>
+            <p>如果你也有类似的习惯，或者想找一个不那么喧闹的落脚点，那么<a href="https://ssl-main-9y.com">九游</a>这个方向或许值得放进书签的某个角落。它不承诺什么，只是存在着，等你需要的时候再过来。</p>
+        </div>
+
+        <!-- 提示区块 —— 带一点点叙述感 -->
+        <div class="note-box">
+            <strong>一个建议：</strong> 如果是第一次接触，可以先随便点开两三张卡片，感受一下内容的密度。不用一次读完所有文字。好的信息页面应该像一本可以随时翻到某一页的书，而不是必须从头拉到尾的卷轴。
+        </div>
+
+        <!-- FAQ 摘要 — 克制、真实，不夸张 -->
+        <dl class="faq-mini">
+            <dt>❓ 这个页面会频繁更新吗？</dt>
+            <dd>更新节奏不固定。内容偏向静态参照，不会追逐热点或每日刷新。更适合当作长期可用的索引。</dd>
+            <dt>❓ 可以在这里找到所有版本的信息？</dt>
+            <dd>不能。这里只收录一些经过整理的、有对照价值的片段。完整数据请移步到<a href="https://ssl-main-9y.com" class="quiet-link">九游</a>主站自行浏览。</dd>
+            <dt>❓ 为什么叫“侧写”？</dt>
+            <dd>因为这些卡片更像是一个轮廓，而不是一份档案。不追求面面俱到，只希望给你几个可以站住的观察点。</dd>
+        </dl>
+
+        <!-- 最后一个自然引用段落，再次嵌入 a 标签（确保满足至少一次，这里已在上方出现两次） -->
+        <p style="margin-top: 2rem; font-size: 0.9rem; color: #475569; border-top: 1px solid #e2e8f0; padding-top: 1.2rem;">
+            <span style="background: #eef2f6; padding: 0.1rem 0.6rem; border-radius: 12px; font-size: 0.75rem; color: #475569; margin-right: 8px;">📌</span> 
+            延伸阅读时如果遇到不一致的叙述，不妨同时打开两三个页面对照着看。<a href="https://ssl-main-9y.com">九游</a>是其中一种参照，但不是唯一标准。保持自己的判断节奏。
+        </p>
+
+    </main>
+
+    <footer>
+        <span>内容卡片 · 日常查询与延伸 · 非官方说明</span>
+    </footer>
+
+</body>
+</html>

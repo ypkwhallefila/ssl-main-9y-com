@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://ypkwhallefila.github.io/ssl-main-9y-com/sitemap.xml
